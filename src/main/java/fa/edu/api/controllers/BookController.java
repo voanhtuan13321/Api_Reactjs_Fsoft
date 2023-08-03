@@ -37,6 +37,13 @@ public class BookController {
     return ResponseEntity.ok().body(books);
   }
 
+  @GetMapping(path = "/category/{idCategory}")
+  public ResponseEntity<List<Book>> getAllBookByCategoryId(@PathVariable(name = "idCategory") Long idCategory) {
+    log.info("get All Book by category id");
+    List<Book> books = bookService.findAllByCategoryId(idCategory);
+    return ResponseEntity.ok().body(books);
+  }
+
   /**
    * Get book by id.
    *

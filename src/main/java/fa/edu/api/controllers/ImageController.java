@@ -38,10 +38,9 @@ public class ImageController {
       try {
         byte[] buffer = Files.readAllBytes(fileName);
         ByteArrayResource bytes = new ByteArrayResource(buffer);
-        return ResponseEntity
-            .ok()
+        return ResponseEntity.ok()
             .contentLength(buffer.length)
-            .contentType(MediaType.parseMediaType("image/png"))
+//            .contentType(MediaType.IMAGE_PNG)
             .body(bytes);
       } catch (IOException e) {
         log.error("Read file error", e);

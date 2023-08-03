@@ -39,6 +39,18 @@ public class BookServiceImpl implements BookService {
     return bookRepository.findAll();
   }
 
+  @Override
+  public List<Book> findAllByCategoryId(Long idCategory) {
+    Optional<Category> optionalCategory = categoryRepository.findById(idCategory);
+    if (optionalCategory.isEmpty()) {
+      return new ArrayList<>();
+    }
+
+    Category category = optionalCategory.get();
+
+    return bookRepository.findAllByCategory(category);
+  }
+
   /**
    * Get book by id.
    *

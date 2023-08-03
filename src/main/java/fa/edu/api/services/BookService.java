@@ -15,6 +15,8 @@ import java.util.List;
 public interface BookService {
   List<Book> findAll();
 
+  List<Book> findAllByCategoryId(Long idCategory);
+
   Book findById(Long bookId);
 
   Book addBook(BookForm bookForm);

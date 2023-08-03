@@ -1,8 +1,8 @@
 package fa.edu.api.common;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -19,8 +19,11 @@ import java.util.UUID;
  * @version 1.0
  * @since 31/07/2023
  */
-public class ImageFile {
+@Slf4j
+public final class ImageFile {
   public static final String PATH_IMAGE = "src\\main\\resources\\static\\image\\";
+
+  private ImageFile() { }
 
   /**
    * Save the image.
@@ -42,7 +45,7 @@ public class ImageFile {
       Files.copy(inputStream, path.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
       return filename;
     } catch (IOException e) {
-      e.printStackTrace();
+      log.error("save file failed", e);
     }
     return "";
   }
@@ -53,7 +56,8 @@ public class ImageFile {
    * @param extension of the file
    * @return file name
    */
-  private static String randomFileName(String extension) {
+
+  public static String randomFileName(String extension) {
     String randomUUID = UUID.randomUUID().toString();
     long timeStamp = new Date().getTime();
     return randomUUID + timeStamp + "." + extension;
@@ -67,7 +71,6 @@ public class ImageFile {
    */
   private static String getFileExtension(MultipartFile file) {
     String originalFileName = file.getOriginalFilename();
-
     return (originalFileName != null && originalFileName.contains("."))
         ? originalFileName.substring(originalFileName.lastIndexOf(".") + 1)
         : "";
@@ -80,10 +83,13 @@ public class ImageFile {
    * @return status of delete
    */
   public static boolean deleteImageFile(String imageName) {
-    File file = new File(PATH_IMAGE + imageName);
-    if (file.exists()) {
-      return file.delete();
+    Path path = Paths.get(PATH_IMAGE, imageName);
+    try {
+      Files.delete(path);
+      return true;
+    } catch (IOException e) {
+      log.error("Error deleting", e);
+      return false;
     }
-    return false;
   }
 }
