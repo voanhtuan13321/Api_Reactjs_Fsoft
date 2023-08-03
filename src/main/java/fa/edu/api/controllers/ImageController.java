@@ -1,6 +1,7 @@
 package fa.edu.api.controllers;
 
 import fa.edu.api.common.ImageFile;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.nio.file.Paths;
 @CrossOrigin
 @RestController
 @RequestMapping(path = "/api/images")
+@Slf4j
 public class ImageController {
 
   /**
@@ -42,7 +44,7 @@ public class ImageController {
             .contentType(MediaType.parseMediaType("image/png"))
             .body(bytes);
       } catch (IOException e) {
-        e.printStackTrace();
+        log.error("Read file error", e);
       }
     }
     return ResponseEntity.badRequest().build();
