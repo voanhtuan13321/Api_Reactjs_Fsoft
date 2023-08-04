@@ -1,16 +1,24 @@
 package fa.edu.api.services.impl;
 
+import fa.edu.api.entities.Cart;
 import fa.edu.api.entities.Order;
+import fa.edu.api.entities.OrderDetail;
+import fa.edu.api.entities.User;
+import fa.edu.api.repositories.CartRepository;
+import fa.edu.api.repositories.OrderDetailRepository;
 import fa.edu.api.repositories.OrderRepository;
+import fa.edu.api.repositories.UserRepository;
 import fa.edu.api.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
- * Title class.
+ * Order service implement class.
  *
  * @author AnhTuan
  * @version 1.0
@@ -20,6 +28,9 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
   private final OrderRepository orderRepository;
+  private final UserRepository userRepository;
+  private final CartRepository cartRepository;
+  private final OrderDetailRepository orderDetailRepository;
 
   /**
    * Get all the orders is confirmed or is not confirmed.
@@ -47,5 +58,55 @@ public class OrderServiceImpl implements OrderService {
             order.isConfirm() == isConfirmed && Objects.equals(order.getUser().getUserId(), userId)
         )
         .toList();
+  }
+
+  /**
+   * Create new order.
+   *
+   * @param userId want to create
+   * @return status
+   */
+  @Override
+  public boolean createNewOrder(Long userId) {
+    Optional<User> optionalUser = userRepository.findById(userId);
+
+    if (optionalUser.isEmpty()) {
+      return false;
+    }
+
+    User user = optionalUser.get();
+    // add to order
+    Order order = Order.builder()
+        .user(user)
+        .orderDate(LocalDateTime.now())
+        .isConfirm(false)
+        .build();
+    orderRepository.save(order);
+
+    // add to order details
+    List<Cart> carts = cartRepository.findAllByUser(user);
+    carts.forEach(cart ->
+        orderDetailRepository.save(
+            OrderDetail.builder()
+                .order(order)
+                .book(cart.getBook())
+                .quantity(cart.getQuantity())
+                .build()
+        )
+    );
+
+    return true;
+  }
+
+  /**
+   * Update confirm order.
+   *
+   * @param idOrder want to confirm
+   */
+  @Override
+  public void updateConfirmOrder(Long idOrder) {
+    Order order = orderRepository.findById(idOrder).orElseThrow();
+    order.setConfirm(true);
+    orderRepository.save(order);
   }
 }

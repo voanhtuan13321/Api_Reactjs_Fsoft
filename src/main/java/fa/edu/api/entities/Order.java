@@ -30,10 +30,6 @@ public class Order {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @OneToMany(mappedBy = "order")
-  @ToString.Exclude
-  private List<OrderDetail> orderDetails;
-
   @Temporal(TemporalType.TIMESTAMP)
   private LocalDateTime orderDate;
 

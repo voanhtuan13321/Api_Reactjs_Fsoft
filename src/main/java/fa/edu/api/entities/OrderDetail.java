@@ -30,4 +30,6 @@ public class OrderDetail {
   @ManyToOne
   @JoinColumn(name = "book_id")
   private Book book;
+
+  private long quantity;
 }

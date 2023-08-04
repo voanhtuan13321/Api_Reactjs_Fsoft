@@ -1,5 +1,6 @@
 package fa.edu.api.controllers;
 
+import fa.edu.api.entities.Book;
 import fa.edu.api.entities.Order;
 import fa.edu.api.services.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -70,5 +71,30 @@ public class OrderController {
     log.info("get All Orders By UserId");
     List<Order> orders = orderService.findAllByUserIdAndIsConfirmed(userId, false);
     return ResponseEntity.ok().body(orders);
+  }
+
+  /**
+   * Create new order.
+   *
+   * @param userId want to create
+   * @return status
+   */
+  @PostMapping(path = "/{userId}")
+  public ResponseEntity<Boolean> createNewOrder(@PathVariable(name = "userId") Long userId) {
+    log.info("create New Order");
+    boolean status = orderService.createNewOrder(userId);
+    return ResponseEntity.ok().body(status);
+  }
+
+  /**
+   * Update confirm order.
+   *
+   * @param idOrder want to confirm
+   */
+  @PutMapping(path = "/confirm/{idOrder}")
+  public ResponseEntity<?> updateConfirmOrder(@PathVariable(name = "idOrder") Long idOrder) {
+    log.info("create New Order");
+    orderService.updateConfirmOrder(idOrder);
+    return ResponseEntity.ok().build();
   }
 }

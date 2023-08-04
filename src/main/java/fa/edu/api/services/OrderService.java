@@ -15,4 +15,8 @@ public interface OrderService {
   List<Order> findAllIsConfirmed(boolean isConfirmed);
 
   List<Order> findAllByUserIdAndIsConfirmed(Long userId, boolean isConfirmed);
+
+  boolean createNewOrder(Long userId);
+
+  void updateConfirmOrder(Long idOrder);
 }
