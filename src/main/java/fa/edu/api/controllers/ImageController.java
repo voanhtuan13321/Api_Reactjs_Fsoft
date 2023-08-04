@@ -43,9 +43,10 @@ public class ImageController {
             .contentType(MediaType.IMAGE_PNG)
             .body(bytes);
       } catch (IOException e) {
-        if ("undefined".equals(imageName)) {
+        if (!"undefined".equals(imageName)) {
           log.error("Read file error", e);
         }
+        return ResponseEntity.ok().build();
       }
     }
     return ResponseEntity.badRequest().build();

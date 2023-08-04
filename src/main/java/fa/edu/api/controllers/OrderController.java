@@ -30,7 +30,7 @@ public class OrderController {
    *
    * @return list of orders
    */
-  @GetMapping()
+  @GetMapping(path = "/confirm")
   public ResponseEntity<List<Order>> getAllOrdersIsConfirmed() {
     log.info("get All Orders Is Confirmed");
     List<Order> orders = orderService.findAllIsConfirmed(true);
@@ -42,7 +42,7 @@ public class OrderController {
    *
    * @return list of orders
    */
-  @GetMapping()
+  @GetMapping(path = "/not-confirm")
   public ResponseEntity<List<Order>> getAllOrdersIsNotConfirmed() {
     log.info("get All Orders Is Not Confirmed");
     List<Order> orders = orderService.findAllIsConfirmed(false);
@@ -54,7 +54,7 @@ public class OrderController {
    *
    * @return list of orders
    */
-  @GetMapping(path = "/users/{userId}")
+  @GetMapping(path = "/users/confirm/{userId}")
   public ResponseEntity<List<Order>> getAllOrdersByUserIdAndIsConfirmed(@PathVariable(name = "userId") Long userId) {
     log.info("get All Orders By UserId");
     List<Order> orders = orderService.findAllByUserIdAndIsConfirmed(userId, true);
@@ -66,7 +66,7 @@ public class OrderController {
    *
    * @return list of orders
    */
-  @GetMapping(path = "/users/{userId}")
+  @GetMapping(path = "/users/not-confirm/{userId}")
   public ResponseEntity<List<Order>> getAllOrdersByUserIdAndIsNotConfirmed(@PathVariable(name = "userId") Long userId) {
     log.info("get All Orders By UserId");
     List<Order> orders = orderService.findAllByUserIdAndIsConfirmed(userId, false);
