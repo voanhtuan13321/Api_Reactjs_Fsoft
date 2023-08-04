@@ -23,7 +23,7 @@ public class Book {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long bookId;
 
-  @ManyToOne
+  @ManyToOne()
   @JoinColumn(name = "category_id")
   private Category category;
 

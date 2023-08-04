@@ -58,7 +58,7 @@ public final class ImageFile {
    */
 
   public static String randomFileName(String extension) {
-    String randomUUID = UUID.randomUUID().toString();
+    String randomUUID = UUID.randomUUID().toString().replace("-", "");
     long timeStamp = new Date().getTime();
     return randomUUID + timeStamp + "." + extension;
   }

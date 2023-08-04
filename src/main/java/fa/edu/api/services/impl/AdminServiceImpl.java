@@ -3,7 +3,7 @@ package fa.edu.api.services.impl;
 import fa.edu.api.entities.Admin;
 import fa.edu.api.repositories.AdminRepository;
 import fa.edu.api.services.AdminService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,9 +16,9 @@ import java.util.Optional;
  * @since 03/08/2023
  */
 @Service
+@RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
-  @Autowired
-  private AdminRepository adminRepository;
+  private final AdminRepository adminRepository;
 
   /**
    * Check user has exited in db.

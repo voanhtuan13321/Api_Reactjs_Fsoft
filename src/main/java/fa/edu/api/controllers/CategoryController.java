@@ -3,8 +3,8 @@ package fa.edu.api.controllers;
 import fa.edu.api.entities.Category;
 import fa.edu.api.requests.CategoryForm;
 import fa.edu.api.services.CategoryService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +21,9 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/categories")
 @Slf4j
+@RequiredArgsConstructor
 public class CategoryController {
-  @Autowired
-  private CategoryService categoryService;
+  private final CategoryService categoryService;
 
   /**
    * Get all categories.

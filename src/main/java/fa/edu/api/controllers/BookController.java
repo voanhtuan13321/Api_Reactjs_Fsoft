@@ -3,8 +3,8 @@ package fa.edu.api.controllers;
 import fa.edu.api.entities.Book;
 import fa.edu.api.requests.BookForm;
 import fa.edu.api.services.BookService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +21,9 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/books")
 @Slf4j
+@RequiredArgsConstructor
 public class BookController {
-  @Autowired
-  private BookService bookService;
+  private final BookService bookService;
 
   /**
    * Get all the books.
@@ -37,6 +37,12 @@ public class BookController {
     return ResponseEntity.ok().body(books);
   }
 
+  /**
+   * Get all the books by category.
+   *
+   * @param idCategory of the category
+   * @return list of books
+   */
   @GetMapping(path = "/category/{idCategory}")
   public ResponseEntity<List<Book>> getAllBookByCategoryId(@PathVariable(name = "idCategory") Long idCategory) {
     log.info("get All Book by category id");

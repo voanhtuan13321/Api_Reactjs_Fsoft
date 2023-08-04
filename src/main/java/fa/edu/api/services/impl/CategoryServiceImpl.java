@@ -1,13 +1,18 @@
 package fa.edu.api.services.impl;
 
+import fa.edu.api.entities.Book;
+import fa.edu.api.entities.Cart;
 import fa.edu.api.entities.Category;
 import fa.edu.api.repositories.BookRepository;
+import fa.edu.api.repositories.CartRepository;
 import fa.edu.api.repositories.CategoryRepository;
 import fa.edu.api.requests.CategoryForm;
 import fa.edu.api.services.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,11 +24,11 @@ import java.util.Optional;
  * @since 01/08/2023
  */
 @Service
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-  @Autowired
-  private CategoryRepository categoryRepository;
-  @Autowired
-  private BookRepository bookRepository;
+  private final CategoryRepository categoryRepository;
+  private final BookRepository bookRepository;
+  private final CartRepository cartRepository;
 
   /**
    * Get all categories.
@@ -90,6 +95,7 @@ public class CategoryServiceImpl implements CategoryService {
    * @return status deleted
    */
   @Override
+  @Transactional
   public boolean deleteCategory(Long idCategory) {
     Optional<Category> optionalCategory = categoryRepository.findById(idCategory);
     if (optionalCategory.isEmpty()) {
@@ -97,7 +103,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     Category category = optionalCategory.get();
-    bookRepository.deleteAllByCategory(category);
+    List<Book> books = bookRepository.findAllByCategory(category);
+    List<Cart> carts = new ArrayList<>();
+    books.forEach(book -> {
+      Optional<Cart> optionalCart = cartRepository.findByBook(book);
+      optionalCart.ifPresent(carts::add);
+    });
+
+    // delete cart and book
+    carts.forEach(cartRepository::delete);
+    books.forEach(bookRepository::delete);
 
     categoryRepository.delete(category);
     return true;

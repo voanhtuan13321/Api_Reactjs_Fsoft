@@ -3,8 +3,8 @@ package fa.edu.api.controllers;
 import fa.edu.api.entities.Cart;
 import fa.edu.api.requests.CartForm;
 import fa.edu.api.services.CartService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +21,10 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/carts")
 @Slf4j
+@RequiredArgsConstructor
 public class CartController {
 
-  @Autowired
-  private CartService cartService;
+  private final CartService cartService;
 
   /**
    * Get all products in cart of user.
@@ -49,6 +49,19 @@ public class CartController {
   public ResponseEntity<Boolean> addProductToCart(@RequestBody CartForm cartForm) {
     log.info("add Product To Cart");
     boolean status = cartService.addProductToCart(cartForm);
+    return ResponseEntity.ok().body(status);
+  }
+
+  /**
+   * Update quantity.
+   *
+   * @param cartForm wants to update quantity
+   * @return status
+   */
+  @PutMapping
+  public ResponseEntity<Boolean> updateQuantity(@RequestBody CartForm cartForm) {
+    log.info("add Product To Cart");
+    boolean status = cartService.updateQuantity(cartForm);
     return ResponseEntity.ok().body(status);
   }
 

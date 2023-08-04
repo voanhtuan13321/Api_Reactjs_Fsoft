@@ -40,10 +40,12 @@ public class ImageController {
         ByteArrayResource bytes = new ByteArrayResource(buffer);
         return ResponseEntity.ok()
             .contentLength(buffer.length)
-//            .contentType(MediaType.IMAGE_PNG)
+            .contentType(MediaType.IMAGE_PNG)
             .body(bytes);
       } catch (IOException e) {
-        log.error("Read file error", e);
+        if ("undefined".equals(imageName)) {
+          log.error("Read file error", e);
+        }
       }
     }
     return ResponseEntity.badRequest().build();

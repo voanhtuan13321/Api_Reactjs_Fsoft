@@ -1,7 +1,11 @@
 package fa.edu.api.repositories;
 
+import fa.edu.api.entities.Book;
+import fa.edu.api.entities.Cart;
 import fa.edu.api.entities.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 /**
  * Title class.

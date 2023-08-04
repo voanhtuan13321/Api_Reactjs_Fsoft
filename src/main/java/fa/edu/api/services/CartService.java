@@ -18,4 +18,6 @@ public interface CartService {
   boolean addProductToCart(CartForm cartForm);
 
   boolean removeProductFromCart(Long idCart);
+
+  boolean updateQuantity(CartForm cartForm);
 }

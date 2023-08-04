@@ -3,7 +3,7 @@ package fa.edu.api.services.impl;
 import fa.edu.api.entities.User;
 import fa.edu.api.repositories.UserRepository;
 import fa.edu.api.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,9 +16,10 @@ import java.util.Optional;
  * @since 03/08/2023
  */
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpt implements UserService {
-  @Autowired
-  private UserRepository userRepository;
+
+  private final UserRepository userRepository;
 
   /**
    * Check username has existed.

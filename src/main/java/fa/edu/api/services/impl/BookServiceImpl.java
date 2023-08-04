@@ -7,7 +7,7 @@ import fa.edu.api.repositories.BookRepository;
 import fa.edu.api.repositories.CategoryRepository;
 import fa.edu.api.requests.BookForm;
 import fa.edu.api.services.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,11 +23,10 @@ import java.util.Optional;
  * @since 31/07/2023
  */
 @Service
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
-  @Autowired
-  private BookRepository bookRepository;
-  @Autowired
-  private CategoryRepository categoryRepository;
+  private final BookRepository bookRepository;
+  private final CategoryRepository categoryRepository;
 
   /**
    * Get all the books.
@@ -148,8 +147,11 @@ public class BookServiceImpl implements BookService {
     if (optionalBook.isEmpty()) {
       return false;
     }
+    Book book = optionalBook.get();
 
-    bookRepository.delete(optionalBook.get());
+    ImageFile.deleteImageFile(book.getImageName());
+
+    bookRepository.delete(book);
     return true;
   }
 }

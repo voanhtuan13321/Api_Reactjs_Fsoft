@@ -16,6 +16,7 @@ import lombok.*;
 @Setter
 @ToString
 public class CartForm {
+  private Long cartId;
   private Long userId;
   private Long bookId;
   private int quantity;

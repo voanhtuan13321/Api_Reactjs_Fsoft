@@ -2,8 +2,8 @@ package fa.edu.api.controllers;
 
 import fa.edu.api.entities.Admin;
 import fa.edu.api.services.AdminService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/admin")
 @Slf4j
+@RequiredArgsConstructor
 public class AdminController {
-  @Autowired
-  private AdminService adminService;
+  private final AdminService adminService;
 
   /**
    * Check user has exited in db.
@@ -33,13 +33,14 @@ public class AdminController {
     log.info("Checking username has exited");
     boolean status = adminService.checkUserExists(username);
     return ResponseEntity.ok().body(status);
-  }/**
+  }
+
+  /**
    * Check login.
    *
    * @param admin want to check
    * @return status check
    */
-
   @PostMapping(path = "/check")
   public ResponseEntity<Long> checkLogin(@RequestBody Admin admin) {
     log.info("Checking login");
