@@ -23,6 +23,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class CategoryController {
+
   private final CategoryService categoryService;
 
   /**

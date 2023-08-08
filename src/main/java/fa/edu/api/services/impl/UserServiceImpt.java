@@ -84,4 +84,13 @@ public class UserServiceImpt implements UserService {
     userRepository.save(oldUser);
     return true;
   }
+
+  @Override
+  public User getInfoUser(Long id) {
+    User user = userRepository.findById(id).orElse(null);
+    if (user != null) {
+      user.setPassword("");
+    }
+    return user;
+  }
 }

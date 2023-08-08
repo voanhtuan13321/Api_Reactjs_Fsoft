@@ -25,6 +25,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
+
   private final BookRepository bookRepository;
   private final CategoryRepository categoryRepository;
 
@@ -34,20 +35,31 @@ public class BookServiceImpl implements BookService {
    * @return book list
    */
   @Override
-  public List<Book> findAll() {
-    return bookRepository.findAll();
+  public List<Book> findAll(String searchKey) {
+    List<Book> list = new ArrayList<>();
+    List<Book> books = bookRepository.findAllAndSearch(searchKey.trim());
+
+    for (Book book : books) {
+      String image = book.getImageName();
+      book.setImageName(ImageFile.URL_API_IMAGE + image);
+      list.add(book);
+    }
+
+    return list;
   }
 
   @Override
-  public List<Book> findAllByCategoryId(Long idCategory) {
-    Optional<Category> optionalCategory = categoryRepository.findById(idCategory);
-    if (optionalCategory.isEmpty()) {
-      return new ArrayList<>();
+  public List<Book> findAllByCategoryId(Long idCategory, String searchKey) {
+    List<Book> list = new ArrayList<>();
+    List<Book> bookList = bookRepository.findAllByCategoryAndSearch(idCategory, searchKey.trim());
+
+    for (Book book : bookList) {
+      String image = book.getImageName();
+      book.setImageName(ImageFile.URL_API_IMAGE + image);
+      list.add(book);
     }
 
-    Category category = optionalCategory.get();
-
-    return bookRepository.findAllByCategory(category);
+    return list;
   }
 
   /**
@@ -57,7 +69,14 @@ public class BookServiceImpl implements BookService {
    */
   @Override
   public Book findById(Long bookId) {
-    return bookRepository.findById(bookId).orElse(null);
+    Book book = bookRepository.findById(bookId).orElse(null);
+
+    if (book != null) {
+      String image = book.getImageName();
+      book.setImageName(ImageFile.URL_API_IMAGE + image);
+    }
+
+    return book;
   }
 
   /**

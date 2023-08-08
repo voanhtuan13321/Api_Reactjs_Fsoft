@@ -17,4 +17,6 @@ public interface UserService {
   Long checkLogin(User user);
 
   boolean updateInfoUser(User user);
+
+  User getInfoUser(Long id);
 }

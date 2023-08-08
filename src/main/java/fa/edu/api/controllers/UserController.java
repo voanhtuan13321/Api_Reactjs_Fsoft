@@ -2,9 +2,8 @@ package fa.edu.api.controllers;
 
 import fa.edu.api.entities.User;
 import fa.edu.api.services.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +18,23 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/users")
 @Slf4j
+@RequiredArgsConstructor
 public class UserController {
-  @Autowired
-  private UserService userService;
+
+  private final UserService userService;
+
+  /**
+   * Get information of user.
+   *
+   * @param id of the user
+   * @return User
+   */
+  @GetMapping(path = "/info/{id}")
+  public ResponseEntity<User> getInfoUser(@PathVariable(name = "id") Long id) {
+    log.info("get Info User");
+    User user = userService.getInfoUser(id);
+    return ResponseEntity.ok().body(user);
+  }
 
   /**
    * Check username has existed.
@@ -74,4 +87,5 @@ public class UserController {
     boolean status = userService.updateInfoUser(user);
     return ResponseEntity.ok().body(status);
   }
+
 }

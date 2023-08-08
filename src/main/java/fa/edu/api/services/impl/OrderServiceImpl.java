@@ -13,9 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Order service implement class.
@@ -39,9 +37,18 @@ public class OrderServiceImpl implements OrderService {
    */
   @Override
   public List<Order> findAllIsConfirmed(boolean isConfirmed) {
-    return orderRepository.findAll()
-        .stream()
-        .filter(order -> order.isConfirm() == isConfirmed)
+    List<Order> list = new ArrayList<>();
+    List<Order> orderList = orderRepository.findAll();
+
+    for (Order order : orderList) {
+      if (order.isConfirm() == isConfirmed) {
+        order.getUser().setPassword("");
+        list.add(order);
+      }
+    }
+
+    return list.stream()
+        .sorted(Comparator.comparing(Order::getOrderDate))
         .toList();
   }
 
@@ -52,11 +59,18 @@ public class OrderServiceImpl implements OrderService {
    */
   @Override
   public List<Order> findAllByUserIdAndIsConfirmed(Long userId, boolean isConfirmed) {
-    return orderRepository.findAll()
-        .stream()
-        .filter(order ->
-            order.isConfirm() == isConfirmed && Objects.equals(order.getUser().getUserId(), userId)
-        )
+    List<Order> list = new ArrayList<>();
+    List<Order> orderList = orderRepository.findAll();
+
+    for (Order order : orderList) {
+      if (order.isConfirm() == isConfirmed && Objects.equals(order.getUser().getUserId(), userId)) {
+        order.getUser().setPassword("");
+        list.add(order);
+      }
+    }
+
+    return list.stream()
+        .sorted(Comparator.comparing(Order::getOrderDate))
         .toList();
   }
 
@@ -95,6 +109,8 @@ public class OrderServiceImpl implements OrderService {
         )
     );
 
+    // remove from cart
+    carts.forEach(cartRepository::delete);
     return true;
   }
 

@@ -77,4 +77,5 @@ public class CartController {
     boolean status = cartService.removeProductFromCart(idCart);
     return ResponseEntity.ok().body(status);
   }
+
 }

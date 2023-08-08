@@ -1,5 +1,6 @@
 package fa.edu.api.services.impl;
 
+import fa.edu.api.common.ImageFile;
 import fa.edu.api.entities.Order;
 import fa.edu.api.entities.OrderDetail;
 import fa.edu.api.repositories.OrderDetailRepository;
@@ -40,6 +41,13 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     Order order = optionalOrder.get();
-    return orderDetailRepository.findAllByOrder(order);
+    List<OrderDetail> list = new ArrayList<>();
+    List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrder(order);
+    for (OrderDetail orderDetail : orderDetailList) {
+      String image = orderDetail.getBook().getImageName();
+      orderDetail.getBook().setImageName(ImageFile.URL_API_IMAGE + image);
+      list.add(orderDetail);
+    }
+    return list;
   }
 }

@@ -13,9 +13,9 @@ import java.util.List;
  * @since 31/07/2023
  */
 public interface BookService {
-  List<Book> findAll();
+  List<Book> findAll(String searchKey);
 
-  List<Book> findAllByCategoryId(Long idCategory);
+  List<Book> findAllByCategoryId(Long idCategory, String searchKey);
 
   Book findById(Long bookId);
 

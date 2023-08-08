@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 public class AdminController {
+
   private final AdminService adminService;
 
   /**
@@ -47,4 +48,5 @@ public class AdminController {
     Long idAdmin = adminService.checkLogin(admin);
     return ResponseEntity.ok().body(idAdmin);
   }
+
 }

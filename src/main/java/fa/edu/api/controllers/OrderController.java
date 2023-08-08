@@ -1,6 +1,5 @@
 package fa.edu.api.controllers;
 
-import fa.edu.api.entities.Book;
 import fa.edu.api.entities.Order;
 import fa.edu.api.services.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +22,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class OrderController {
+
   private final OrderService orderService;
 
   /**
@@ -81,7 +81,7 @@ public class OrderController {
    */
   @PostMapping(path = "/{userId}")
   public ResponseEntity<Boolean> createNewOrder(@PathVariable(name = "userId") Long userId) {
-    log.info("create New Order");
+    log.info("create New Order" + userId);
     boolean status = orderService.createNewOrder(userId);
     return ResponseEntity.ok().body(status);
   }
@@ -92,9 +92,10 @@ public class OrderController {
    * @param idOrder want to confirm
    */
   @PutMapping(path = "/confirm/{idOrder}")
-  public ResponseEntity<?> updateConfirmOrder(@PathVariable(name = "idOrder") Long idOrder) {
+  public ResponseEntity<String> updateConfirmOrder(@PathVariable(name = "idOrder") Long idOrder) {
     log.info("create New Order");
     orderService.updateConfirmOrder(idOrder);
     return ResponseEntity.ok().build();
   }
+
 }

@@ -22,6 +22,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class OrderDetailController {
+
   private final OrderDetailService orderDetailService;
 
   /**
@@ -36,4 +37,5 @@ public class OrderDetailController {
     List<OrderDetail> orderDetails = orderDetailService.getAllOrderDetailByOrderId(orderId);
     return ResponseEntity.ok().body(orderDetails);
   }
+
 }

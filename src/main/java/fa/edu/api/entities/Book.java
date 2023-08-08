@@ -30,7 +30,7 @@ public class Book {
   @Column(columnDefinition = "NVARCHAR(100)")
   private String title;
 
-  @Column(columnDefinition = "NVARCHAR(255)")
+  @Column(columnDefinition = "NVARCHAR(MAX)")
   private String description;
 
   @Column(columnDefinition = "NVARCHAR(100)")

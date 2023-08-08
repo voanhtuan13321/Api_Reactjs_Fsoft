@@ -23,6 +23,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class BookController {
+
   private final BookService bookService;
 
   /**
@@ -31,9 +32,11 @@ public class BookController {
    * @return book list
    */
   @GetMapping
-  public ResponseEntity<List<Book>> getAllBook() {
+  public ResponseEntity<List<Book>> getAllBook(
+      @RequestParam(value = "search", defaultValue = "", required = false) String searchKey
+  ) {
     log.info("get All Book");
-    List<Book> books = bookService.findAll();
+    List<Book> books = bookService.findAll(searchKey);
     return ResponseEntity.ok().body(books);
   }
 
@@ -44,9 +47,12 @@ public class BookController {
    * @return list of books
    */
   @GetMapping(path = "/category/{idCategory}")
-  public ResponseEntity<List<Book>> getAllBookByCategoryId(@PathVariable(name = "idCategory") Long idCategory) {
+  public ResponseEntity<List<Book>> getAllBookByCategoryId(
+      @PathVariable(name = "idCategory") Long idCategory,
+      @RequestParam(value = "search", defaultValue = "", required = false) String searchKey
+  ) {
     log.info("get All Book by category id");
-    List<Book> books = bookService.findAllByCategoryId(idCategory);
+    List<Book> books = bookService.findAllByCategoryId(idCategory, searchKey);
     return ResponseEntity.ok().body(books);
   }
 
@@ -101,4 +107,5 @@ public class BookController {
     boolean status = bookService.deleteBook(bookId);
     return ResponseEntity.ok().body(status);
   }
+
 }

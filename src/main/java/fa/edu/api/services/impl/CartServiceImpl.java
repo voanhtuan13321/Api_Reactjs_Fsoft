@@ -1,5 +1,6 @@
 package fa.edu.api.services.impl;
 
+import fa.edu.api.common.ImageFile;
 import fa.edu.api.entities.Book;
 import fa.edu.api.entities.Cart;
 import fa.edu.api.entities.User;
@@ -44,7 +45,16 @@ public class CartServiceImpl implements CartService {
     }
 
     User user = optionalUser.get();
-    return cartRepository.findAllByUser(user);
+    List<Cart> list = new ArrayList<>();
+    List<Cart> listOfCart = cartRepository.findAllByUser(user);
+
+    for (Cart cart : listOfCart) {
+      String image = cart.getBook().getImageName();
+      cart.getBook().setImageName(ImageFile.URL_API_IMAGE + image);
+      list.add(cart);
+    }
+
+    return list;
   }
 
   /**
