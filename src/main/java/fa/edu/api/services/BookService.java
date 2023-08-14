@@ -24,4 +24,6 @@ public interface BookService {
   Book updateBook(BookForm bookForm);
 
   boolean deleteBook(Long bookId);
+
+  List<Book> topGoodPriceBook(int topBook);
 }

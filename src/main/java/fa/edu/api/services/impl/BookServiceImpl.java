@@ -8,8 +8,11 @@ import fa.edu.api.repositories.CategoryRepository;
 import fa.edu.api.requests.BookForm;
 import fa.edu.api.services.BookService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +27,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BookServiceImpl implements BookService {
 
   private final BookRepository bookRepository;
@@ -92,23 +96,28 @@ public class BookServiceImpl implements BookService {
       return null;
     }
 
-    String fileName = ImageFile.saveImageFile(bookForm.getImage());
+    try {
+      String fileName = ImageFile.saveImageFile(bookForm.getImage());
+      if (fileName.isEmpty()) {
+        return null;
+      }
 
-    if (fileName.isEmpty()) {
+      Book newBook = Book.builder()
+          .category(category)
+          .title(bookForm.getTitle())
+          .description(bookForm.getDescription())
+          .author(bookForm.getAuthor())
+          .imageName(fileName)
+          .price(bookForm.getPrice())
+          .quantity(bookForm.getQuantity())
+          .build();
+
+      return bookRepository.save(newBook);
+    } catch (IOException e) {
+      log.error("save file error", e);
       return null;
     }
 
-    Book newBook = Book.builder()
-        .category(category)
-        .title(bookForm.getTitle())
-        .description(bookForm.getDescription())
-        .author(bookForm.getAuthor())
-        .imageName(fileName)
-        .price(bookForm.getPrice())
-        .quantity(bookForm.getQuantity())
-        .build();
-
-    return bookRepository.save(newBook);
   }
 
   /**
@@ -133,9 +142,15 @@ public class BookServiceImpl implements BookService {
       oldBook.setCategory(newCategory);
     }
 
-    // check ì the image has changed
+    // check if the image has changed
     if (bookForm.getImage() != null) {
-      String fileName = ImageFile.saveImageFile(bookForm.getImage());
+      String fileName = null;
+      try {
+        fileName = ImageFile.saveImageFile(bookForm.getImage());
+      } catch (IOException e) {
+        log.error("save file error", e);
+        return null;
+      }
       boolean hasRemoved = ImageFile.deleteImageFile(oldBook.getImageName());
 
       if (fileName.isEmpty() && hasRemoved) {
@@ -172,5 +187,17 @@ public class BookServiceImpl implements BookService {
 
     bookRepository.delete(book);
     return true;
+  }
+
+  /**
+   * Top good price book.
+   *
+   * @param topBook the top price book
+   * @return list of books
+   */
+  @Override
+  public List<Book> topGoodPriceBook(int topBook) {
+    Sort sort = Sort.by("price").ascending();
+    return bookRepository.findFirst5By(sort);
   }
 }

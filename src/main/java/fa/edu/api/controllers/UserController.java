@@ -1,11 +1,14 @@
 package fa.edu.api.controllers;
 
 import fa.edu.api.entities.User;
+import fa.edu.api.requests.Response1Form;
 import fa.edu.api.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * User controller class.
@@ -88,4 +91,10 @@ public class UserController {
     return ResponseEntity.ok().body(status);
   }
 
+  @GetMapping(path = "/top-buy-the-most")
+  public ResponseEntity<List<Response1Form>> getTopBuyTheMost() {
+    log.info("get top buy the most");
+    List<Response1Form> result = userService.topUserBuyTheMost(5);
+    return ResponseEntity.ok().body(result);
+  }
 }

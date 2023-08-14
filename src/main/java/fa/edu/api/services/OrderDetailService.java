@@ -1,6 +1,7 @@
 package fa.edu.api.services;
 
 import fa.edu.api.entities.OrderDetail;
+import fa.edu.api.requests.Response2Form;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ import java.util.List;
  */
 public interface OrderDetailService {
   List<OrderDetail> getAllOrderDetailByOrderId(Long orderId);
+
+  List<Response2Form> topBestSellingBook(int topBook);
 }

@@ -1,6 +1,7 @@
 package fa.edu.api.controllers;
 
 import fa.edu.api.entities.OrderDetail;
+import fa.edu.api.requests.Response2Form;
 import fa.edu.api.services.OrderDetailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,15 @@ public class OrderDetailController {
     log.info("get All Order Detail By OrderId");
     List<OrderDetail> orderDetails = orderDetailService.getAllOrderDetailByOrderId(orderId);
     return ResponseEntity.ok().body(orderDetails);
+  }
+
+  /**
+   * Get top best-selling book.
+   */
+  @GetMapping(path = "top-best-selling")
+  public ResponseEntity<List<Response2Form>> topBestSellingBook() {
+    log.info("top best-selling book");
+    return ResponseEntity.ok().body(orderDetailService.topBestSellingBook(5));
   }
 
 }

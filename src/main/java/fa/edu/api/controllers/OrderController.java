@@ -1,6 +1,7 @@
 package fa.edu.api.controllers;
 
 import fa.edu.api.entities.Order;
+import fa.edu.api.requests.Response3Form;
 import fa.edu.api.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -96,6 +97,23 @@ public class OrderController {
     log.info("create New Order");
     orderService.updateConfirmOrder(idOrder);
     return ResponseEntity.ok().build();
+  }
+
+  /**
+   * Statistical.
+   *
+   * @param month the month want to statistic
+   * @param year the year want to statistic
+   * @return statistical
+   */
+  @GetMapping(path = "/statistical/{month}/{year}")
+  public ResponseEntity<List<Response3Form>> statistical(
+      @PathVariable(name = "month") int month,
+      @PathVariable(name = "year") int year
+  ) {
+    log.info("Statistical");
+    List<Response3Form> statistical = orderService.statisticalByMonthAndYear(month, year);
+    return ResponseEntity.ok().body(statistical);
   }
 
 }

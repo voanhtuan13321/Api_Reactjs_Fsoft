@@ -32,23 +32,18 @@ public final class ImageFile {
    * @param imageFile need to save
    * @return file name
    */
-  public static String saveImageFile(MultipartFile imageFile) {
+  public static String saveImageFile(MultipartFile imageFile) throws IOException {
     if (imageFile.isEmpty()) {
       return "";
     }
 
     Path path = Paths.get(PATH_IMAGE);
 
-    try {
-      InputStream inputStream = imageFile.getInputStream();
-      String extension = getFileExtension((imageFile));
-      String filename = randomFileName(extension);
-      Files.copy(inputStream, path.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-      return filename;
-    } catch (IOException e) {
-      log.error("save file failed", e);
-    }
-    return "";
+    InputStream inputStream = imageFile.getInputStream();
+    String extension = getFileExtension(imageFile);
+    String filename = randomFileName(extension);
+    Files.copy(inputStream, path.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+    return filename;
   }
 
   /**

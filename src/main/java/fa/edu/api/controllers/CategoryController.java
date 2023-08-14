@@ -48,7 +48,9 @@ public class CategoryController {
   public ResponseEntity<Category> getCategoryById(@PathVariable(name = "idCategory") Long idCategory) {
     log.info("get Category By Id");
     Category category = categoryService.getById(idCategory);
-    return ResponseEntity.ok().body(category);
+    return category != null
+        ? ResponseEntity.ok().body(category)
+        : ResponseEntity.internalServerError().build();
   }
 
   /**
@@ -61,7 +63,9 @@ public class CategoryController {
   public ResponseEntity<Category> addNewCategory(@RequestBody CategoryForm categoryForm) {
     log.info("add new category");
     Category category = categoryService.addNewCategory(categoryForm);
-    return ResponseEntity.ok().body(category);
+    return category != null
+        ? ResponseEntity.ok().body(category)
+        : ResponseEntity.internalServerError().build();
   }
 
   /**

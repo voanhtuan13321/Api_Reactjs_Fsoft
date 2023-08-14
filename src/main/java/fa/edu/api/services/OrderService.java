@@ -1,6 +1,7 @@
 package fa.edu.api.services;
 
 import fa.edu.api.entities.Order;
+import fa.edu.api.requests.Response3Form;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface OrderService {
   boolean createNewOrder(Long userId);
 
   void updateConfirmOrder(Long idOrder);
+
+  List<Response3Form> statisticalByMonthAndYear(int month, int year);
 }

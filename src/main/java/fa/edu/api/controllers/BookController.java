@@ -108,4 +108,13 @@ public class BookController {
     return ResponseEntity.ok().body(status);
   }
 
+  /**
+   * Top good price book.
+   *
+   */
+  @GetMapping(path = "/top-good-price")
+  public ResponseEntity<List<Book>> getTopGoodPriceBook() {
+    log.info("top good price book");
+    return ResponseEntity.ok().body(bookService.topGoodPriceBook(5));
+  }
 }

@@ -33,7 +33,9 @@ public class AdminController {
   public ResponseEntity<Boolean> checkUserExists(@PathVariable(name = "username") String username) {
     log.info("Checking username has exited");
     boolean status = adminService.checkUserExists(username);
-    return ResponseEntity.ok().body(status);
+    return status
+        ? ResponseEntity.ok().body(true)
+        : ResponseEntity.notFound().build();
   }
 
   /**
@@ -46,7 +48,9 @@ public class AdminController {
   public ResponseEntity<Long> checkLogin(@RequestBody Admin admin) {
     log.info("Checking login");
     Long idAdmin = adminService.checkLogin(admin);
-    return ResponseEntity.ok().body(idAdmin);
+    return idAdmin != null
+        ? ResponseEntity.ok().body(idAdmin)
+        : ResponseEntity.notFound().build();
   }
 
 }

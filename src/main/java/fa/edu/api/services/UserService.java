@@ -1,6 +1,9 @@
 package fa.edu.api.services;
 
 import fa.edu.api.entities.User;
+import fa.edu.api.requests.Response1Form;
+
+import java.util.List;
 
 /**
  * User service class.
@@ -19,4 +22,6 @@ public interface UserService {
   boolean updateInfoUser(User user);
 
   User getInfoUser(Long id);
+
+  List<Response1Form> topUserBuyTheMost(int top);
 }

@@ -1,11 +1,17 @@
 package fa.edu.api.services.impl;
 
+import fa.edu.api.entities.Order;
 import fa.edu.api.entities.User;
+import fa.edu.api.repositories.OrderRepository;
 import fa.edu.api.repositories.UserRepository;
+import fa.edu.api.requests.Response1Form;
 import fa.edu.api.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -20,6 +26,7 @@ import java.util.Optional;
 public class UserServiceImpt implements UserService {
 
   private final UserRepository userRepository;
+  private final OrderRepository orderRepository;
 
   /**
    * Check username has existed.
@@ -93,4 +100,26 @@ public class UserServiceImpt implements UserService {
     }
     return user;
   }
+
+  @Override
+  public List<Response1Form> topUserBuyTheMost(int top) {
+    User user = null;
+    Response1Form response1Form = null;
+    List<Response1Form> response1Forms = new ArrayList<>();
+    List<Map<String, Long>> result = userRepository.topUserBuyTheMost(top);
+
+    for (Map<String, Long> rs : result) {
+      user = userRepository.findById(rs.get("user_id")).orElseThrow();
+      user.setPassword("");
+
+      response1Form = Response1Form.builder()
+          .user(user)
+          .quantity(rs.get("quantity"))
+          .build();
+      response1Forms.add(response1Form);
+    }
+
+    return response1Forms;
+  }
+
 }
