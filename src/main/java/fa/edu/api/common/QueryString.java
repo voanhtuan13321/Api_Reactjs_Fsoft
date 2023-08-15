@@ -40,5 +40,12 @@ public class QueryString {
       + "FROM tb_order od "
       + "INNER JOIN tb_order_detail dt ON dt.order_id = od.id "
       + "INNER JOIN tb_book b ON b.book_id = dt.book_id "
-      + "WHERE od.is_confirm = 1";
+      + "WHERE od.is_confirm = 1 AND year(od.order_date) = ?1 AND month(od.order_date) = ?2";
+
+  public static final String STATISTICAL_YEAR
+      = "SELECT SUM(dt.quantity * b.price) AS total "
+      + "FROM tb_order od "
+      + "INNER JOIN tb_order_detail dt ON dt.order_id = od.id "
+      + "INNER JOIN tb_book b ON b.book_id = dt.book_id "
+      + "WHERE od.is_confirm = 1 AND year(od.order_date) = ?1";
 }

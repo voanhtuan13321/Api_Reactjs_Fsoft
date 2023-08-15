@@ -21,5 +21,7 @@ public interface OrderService {
 
   void updateConfirmOrder(Long idOrder);
 
-  List<Response3Form> statisticalByMonthAndYear(int month, int year);
+  List<Double> statisticalByMonthAndYear(int month, int year);
+
+  double statisticalByMonthAndYear(int year);
 }

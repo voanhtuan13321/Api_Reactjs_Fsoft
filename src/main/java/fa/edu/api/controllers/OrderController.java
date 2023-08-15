@@ -107,12 +107,25 @@ public class OrderController {
    * @return statistical
    */
   @GetMapping(path = "/statistical/{month}/{year}")
-  public ResponseEntity<List<Response3Form>> statistical(
+  public ResponseEntity<List<Double>> statistical(
       @PathVariable(name = "month") int month,
       @PathVariable(name = "year") int year
   ) {
     log.info("Statistical");
-    List<Response3Form> statistical = orderService.statisticalByMonthAndYear(month, year);
+    List<Double> statistical = orderService.statisticalByMonthAndYear(month, year);
+    return ResponseEntity.ok().body(statistical);
+  }
+
+  /**
+   * Statistical.
+   *
+   * @param year the year want to statistic
+   * @return statistical
+   */
+  @GetMapping(path = "/statistical/year/{year}")
+  public ResponseEntity<Double> statistical(@PathVariable(name = "year") int year) {
+    log.info("Statistical");
+    double statistical = orderService.statisticalByMonthAndYear(year);
     return ResponseEntity.ok().body(statistical);
   }
 

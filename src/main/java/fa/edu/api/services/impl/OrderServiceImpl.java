@@ -141,19 +141,14 @@ public class OrderServiceImpl implements OrderService {
    * @return statistical
    */
   @Override
-  public List<Response3Form> statisticalByMonthAndYear(int month, int year) {
+  public List<Double> statisticalByMonthAndYear(int month, int year) {
     int daysInMonth = YearMonth.of(year, month).lengthOfMonth();
-    Response3Form form = null;
-    List<Response3Form> response3Forms = new ArrayList<>();
-    List<Map<String, Object>> results = orderRepository.statistical();
+    List<Double> response3Forms = new ArrayList<>();
+    List<Map<String, Object>> results = orderRepository.statistical(year, month);
 
     // create days of the month
-    for (int i = 1; i <= daysInMonth; i++) {
-      form = Response3Form.builder()
-          .date(i)
-          .totalPrice(0)
-          .build();
-      response3Forms.add(form);
+    for (int i = 0; i < daysInMonth; i++) {
+      response3Forms.add(0.0);
     }
 
     for (Map<String, Object> result : results) {
@@ -163,15 +158,21 @@ public class OrderServiceImpl implements OrderService {
       Calendar calendar = Calendar.getInstance();
       calendar.setTime(orderDate);
 
-      int m = calendar.get(Calendar.MONTH);
-      int y = calendar.get(Calendar.YEAR);
-
-      if (m + 1 == month && y == year) {
-        double newTotalPrice = response3Forms.get(m).getTotalPrice() + total;
-        response3Forms.get(m).setTotalPrice(newTotalPrice);
-      }
+      int date = calendar.get(Calendar.DAY_OF_MONTH);
+      int index = date - 1;
+      double newTotalPrice = response3Forms.get(index) + total;
+      response3Forms.set(index, newTotalPrice);
     }
 
     return response3Forms;
+  }
+
+  @Override
+  public double statisticalByMonthAndYear(int year) {
+    try {
+      return orderRepository.statistical(year);
+    } catch (Exception e) {
+      return 0;
+    }
   }
 }
