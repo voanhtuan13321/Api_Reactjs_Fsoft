@@ -3,7 +3,6 @@ package fa.edu.api.repositories;
 import fa.edu.api.common.QueryString;
 import fa.edu.api.entities.Order;
 import fa.edu.api.entities.OrderDetail;
-import fa.edu.api.requests.Response2Form;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

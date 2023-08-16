@@ -1,6 +1,5 @@
 package fa.edu.api.requests;
 
-import fa.edu.api.entities.Book;
 import fa.edu.api.entities.User;
 import lombok.Builder;
 import lombok.Data;

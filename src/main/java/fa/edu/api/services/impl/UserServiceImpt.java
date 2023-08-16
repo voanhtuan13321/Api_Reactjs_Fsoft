@@ -1,6 +1,5 @@
 package fa.edu.api.services.impl;
 
-import fa.edu.api.entities.Order;
 import fa.edu.api.entities.User;
 import fa.edu.api.repositories.OrderRepository;
 import fa.edu.api.repositories.UserRepository;

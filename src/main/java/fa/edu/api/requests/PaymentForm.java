@@ -1,12 +1,13 @@
 package fa.edu.api.requests;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Getter
+@Setter
+@ToString
 public class PaymentForm {
   private Integer amount;
   private String vnpOrderInfo;
