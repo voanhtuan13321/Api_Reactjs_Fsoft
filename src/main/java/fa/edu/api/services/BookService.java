@@ -13,7 +13,7 @@ import java.util.List;
  * @since 31/07/2023
  */
 public interface BookService {
-  List<Book> findAll(String searchKey);
+  List<Book> findAll(String searchKey, int page);
 
   List<Book> findAllByCategoryId(Long idCategory, String searchKey);
 
@@ -26,4 +26,6 @@ public interface BookService {
   boolean deleteBook(Long bookId);
 
   List<Book> topGoodPriceBook(int topBook);
+
+  List<Long> getPagesNumber(String searchKey, int categoryId);
 }

@@ -27,16 +27,29 @@ public class BookController {
   private final BookService bookService;
 
   /**
+   * Get number of pages.
+   */
+  @GetMapping(path = "/pages-number")
+  public ResponseEntity<List<Long>> getPagesNumber(
+      @RequestParam(value = "search", defaultValue = "", required = false) String searchKey,
+      @RequestParam(value = "categoryId", defaultValue = "0", required = false) int categoryId
+  ) {
+    log.info("get Pages Number");
+    return ResponseEntity.ok().body(bookService.getPagesNumber(searchKey, categoryId));
+  }
+
+  /**
    * Get all the books.
    *
    * @return book list
    */
   @GetMapping
   public ResponseEntity<List<Book>> getAllBook(
-      @RequestParam(value = "search", defaultValue = "", required = false) String searchKey
+      @RequestParam(value = "search", defaultValue = "", required = false) String searchKey,
+      @RequestParam(value = "page", defaultValue = "1", required = false) int page
   ) {
     log.info("get All Book");
-    List<Book> books = bookService.findAll(searchKey);
+    List<Book> books = bookService.findAll(searchKey, page);
     return ResponseEntity.ok().body(books);
   }
 
@@ -110,7 +123,6 @@ public class BookController {
 
   /**
    * Top good price book.
-   *
    */
   @GetMapping(path = "/top-good-price")
   public ResponseEntity<List<Book>> getTopGoodPriceBook() {

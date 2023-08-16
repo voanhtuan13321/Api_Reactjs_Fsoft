@@ -39,9 +39,10 @@ public class BookServiceImpl implements BookService {
    * @return book list
    */
   @Override
-  public List<Book> findAll(String searchKey) {
+  public List<Book> findAll(String searchKey, int page) {
+    int numRowInPage = 8;
     List<Book> list = new ArrayList<>();
-    List<Book> books = bookRepository.findAllAndSearch(searchKey.trim());
+    List<Book> books = bookRepository.findAllAndSearch(searchKey.trim(), page, numRowInPage);
 
     for (Book book : books) {
       String image = book.getImageName();
@@ -199,5 +200,30 @@ public class BookServiceImpl implements BookService {
   public List<Book> topGoodPriceBook(int topBook) {
     Sort sort = Sort.by("price").ascending();
     return bookRepository.findFirst5By(sort);
+  }
+
+  @Override
+  public List<Long> getPagesNumber(String searchKey, int categoryId) {
+    List<Long> numberPages = new ArrayList<>();
+    long numberBookInPage = 8;
+    long numberProduct = categoryId == 0
+        ? bookRepository.countAllBooksBySearch(searchKey)
+        : bookRepository.countAllBooksBySearch(searchKey, categoryId);
+
+    if (numberProduct < numberBookInPage) {
+      return new ArrayList<>();
+    }
+
+    long numberPage = numberProduct / numberBookInPage;
+
+    if (numberProduct % numberBookInPage != 0) {
+      numberPage++;
+    }
+
+    for (long i = 1; i <= numberPage; i++) {
+      numberPages.add(i);
+    }
+
+    return numberPages;
   }
 }

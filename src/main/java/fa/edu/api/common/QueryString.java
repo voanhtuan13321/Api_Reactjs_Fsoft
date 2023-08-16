@@ -11,15 +11,28 @@ public class QueryString {
 
   private QueryString() { }
 
-  public static final String FIND_ALL_SEARCH
+  public  static final String FIND_ALL_SEARCH
       = "SELECT * "
       + "FROM tb_book "
-      + "WHERE CONCAT(title, '-', description, '-', author) LIKE %?1%";
+      + "WHERE CONCAT(title, '-', description, '-', author) LIKE %:search% "
+      + "ORDER BY book_id "
+      + "OFFSET :numRowInPage * (:numPage - 1) ROWS "
+      + "FETCH NEXT :numRowInPage ROWS ONLY";
+
+  public static final String COUNT_ALL_BOOK
+      = "SELECT COUNT(1) "
+      + "FROM tb_book "
+      + "WHERE CONCAT(title, '-', description, '-', author) LIKE %:search% ";
+
+  public static final String COUNT_ALL_BOOK_BY_CATEGORY
+      = "SELECT COUNT(1) "
+      + "FROM tb_book "
+      + "WHERE CONCAT(title, '-', description, '-', author) LIKE %:search% AND category_id = :category_id";
 
   public static final String FIND_ALL_BY_CATEGORY_SEARCH
       = "SELECT * "
       + "FROM tb_book "
-      + "WHERE category_id = ?1 AND CONCAT(title, '-', description, '-', author) LIKE %?2%";
+      + "WHERE CONCAT(title, '-', description, '-', author) LIKE %:search% AND category_id = :category_id";
 
   public static final String TOP_BEST_SELLING_BOOK
       = "SELECT DISTINCT TOP (?1) book_id, SUM(quantity) AS 'quantity' "
@@ -40,12 +53,12 @@ public class QueryString {
       + "FROM tb_order od "
       + "INNER JOIN tb_order_detail dt ON dt.order_id = od.id "
       + "INNER JOIN tb_book b ON b.book_id = dt.book_id "
-      + "WHERE od.is_confirm = 1 AND year(od.order_date) = ?1 AND month(od.order_date) = ?2";
+      + "WHERE od.is_confirm = 1 AND year(od.order_date) = :year AND month(od.order_date) = :date";
 
   public static final String STATISTICAL_YEAR
       = "SELECT SUM(dt.quantity * b.price) AS total "
       + "FROM tb_order od "
       + "INNER JOIN tb_order_detail dt ON dt.order_id = od.id "
       + "INNER JOIN tb_book b ON b.book_id = dt.book_id "
-      + "WHERE od.is_confirm = 1 AND year(od.order_date) = ?1";
+      + "WHERE od.is_confirm = 1 AND year(od.order_date) = :year";
 }
