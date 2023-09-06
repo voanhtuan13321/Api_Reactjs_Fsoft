@@ -27,10 +27,6 @@ public class OrderServiceImpl implements OrderService {
   private final OrderDetailRepository orderDetailRepository;
   private final BookRepository bookRepository;
 
-  private static int compare(Order o1, Order o2) { return -o1.getOrderDate().compareTo(o2.getOrderDate()); }
-
-  private static int compare2(Order o1, Order o2) { return -o1.getOrderDate().compareTo(o2.getOrderDate()); }
-
   /**
    * Get all the orders is confirmed or is not confirmed.
    *
@@ -39,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public List<Order> findAllIsConfirmed(boolean isConfirmed) {
     List<Order> list = new ArrayList<>();
-    List<Order> orderList = orderRepository.findAll();
+    List<Order> orderList = orderRepository.findAllByOrderByOrderDateDesc();
 
     for (Order order : orderList) {
       if (order.isConfirm() == isConfirmed) {
@@ -48,9 +44,7 @@ public class OrderServiceImpl implements OrderService {
       }
     }
 
-    return list.stream()
-        .sorted(OrderServiceImpl::compare)
-        .toList();
+    return list;
   }
 
   /**
@@ -61,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public List<Order> findAllByUserIdAndIsConfirmed(Long userId, boolean isConfirmed) {
     List<Order> list = new ArrayList<>();
-    List<Order> orderList = orderRepository.findAll();
+    List<Order> orderList = orderRepository.findAllByOrderByOrderDateDesc();
 
     for (Order order : orderList) {
       if (order.isConfirm() == isConfirmed && Objects.equals(order.getUser().getUserId(), userId)) {
@@ -70,9 +64,7 @@ public class OrderServiceImpl implements OrderService {
       }
     }
 
-    return list.stream()
-        .sorted(OrderServiceImpl::compare2)
-        .toList();
+    return list;
   }
 
   /**

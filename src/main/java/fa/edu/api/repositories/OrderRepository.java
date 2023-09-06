@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
+  List<Order> findAllByOrderByOrderDateDesc();
 
   @Query(value = QueryString.STATISTICAL, nativeQuery = true)
   List<Map<String, Object>> statistical(
